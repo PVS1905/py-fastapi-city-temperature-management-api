@@ -11,7 +11,7 @@ def get_city(db: Session, limit: int = 20):
     return result.all()
 
 
-def create_city(db: Session, city: schemas.CitySchemaBase) -> models.City:
+def create_city(db: Session, city: schemas.City) -> models.City:
     existing = db.scalar(
         select(models.City).where(
             models.City.additional_info == city.additional_info,
@@ -39,14 +39,14 @@ def get_city_by_id(db: Session, city_id: int) -> models.City:
         select(models.City).where(models.City.id == city_id)
     ).scalar_one_or_none()
     if not city:
-        raise HTTPException(status_code=404, detail="Author not found")
+        raise HTTPException(status_code=404, detail="City not found")
     return city
 
 
-def city_update(db: Session, city_id: int, city: schemas.CitySchemaBase) -> models.City:
+def city_update(db: Session, city_id: int, city: schemas.City) -> models.City:
     city_db = get_city_by_id(db, city_id)
     if not city_db:
-        raise HTTPException(status_code=404, detail="Author not found")
+        raise HTTPException(status_code=404, detail="City not found")
 
     city_db.name = city.name
     city_db.additional_info = city.additional_info

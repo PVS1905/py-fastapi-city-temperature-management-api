@@ -15,7 +15,7 @@ def get_cities(db: Session = Depends(get_db), limit: int | None = None):
 
 
 @city_router.post("/cities", response_model=schemas.CitySchemaDetail)
-def create_city(city: schemas.CitySchemaBase, db: Session = Depends(get_db)):
+def create_city(city: schemas.City, db: Session = Depends(get_db)):
     return crud.create_city(db=db, city=city)
 
 
@@ -25,7 +25,7 @@ def get_city(city_id: int, db: Session = Depends(get_db)):
 
 
 @city_router.put("/cities/{city_id}", response_model=schemas.CitySchemaDetail)
-def update_city(city_id: int, city: schemas.CitySchemaBase, db: Session = Depends(get_db)):
+def update_city(city_id: int, city: schemas.City, db: Session = Depends(get_db)):
     return crud.city_update(db=db, city_id=city_id, city=city)
 
 
@@ -52,7 +52,7 @@ async def temperatures_update(db: Session = Depends(get_db)):
     return {"message": "Temperatures updated"}
 
 
-@city_router.get("/temperatures", response_model=list[schemas.TemperatureSchema])
+@city_router.get("/temperatures", response_model=list[schemas.Temperature])
 def get_temperatures(
     city_id: int | None = None,
     db: Session = Depends(get_db)
